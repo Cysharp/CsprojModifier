@@ -1,6 +1,6 @@
-# CsprojModifier: C# Project Modifier for Unity Editor
+# CsprojModifier
 
-This Unity Editor extension improves the development experience in Visual Studio and Rider by performing additional processing when generating the .csproj.
+CsprojModifier improves the developer experience in Visual Studio and Rider by performing additional processing when Unity Editor generates .csproj.
 
 CsprojModifier provides following features:
 
