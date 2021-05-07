@@ -9,8 +9,20 @@ CsprojModifier provides following features:
 
 ![](docs/images/Screen-01.png)
 
-<!-- START doctoc -->
-<!-- END doctoc -->
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+## Table of Contents
+
+- [Works with](#works-with)
+- [Install](#install)
+- [Features](#features)
+  - [Insert additional projects as `Import` elements into generated .csproj](#insert-additional-projects-as-import-elements-into-generated-csproj)
+    - [Example](#example)
+  - [Add analyzer references to generated .csproj](#add-analyzer-references-to-generated-csproj)
+    - [How to use](#how-to-use)
+- [License](#license)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Works with
 - Unity Editor 2019.4 (LTS) or later
