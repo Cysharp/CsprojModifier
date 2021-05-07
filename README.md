@@ -2,6 +2,8 @@
 
 CsprojModifier improves the developer experience in Visual Studio and Rider by performing additional processing when Unity Editor generates .csproj.
 
+[日本語](README.ja.md)
+
 CsprojModifier provides following features:
 
 - Insert additional projects as `Import` elements into generated .csproj
