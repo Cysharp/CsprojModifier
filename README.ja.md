@@ -16,6 +16,10 @@ CsprojModifier は次の特徴を備えています:
 - [Works with](#works-with)
 - [Install](#install)
 - [Features](#features)
+  - [生成された .csproj に追加のプロジェクトを `Import` 要素で追加する](#%E7%94%9F%E6%88%90%E3%81%95%E3%82%8C%E3%81%9F-csproj-%E3%81%AB%E8%BF%BD%E5%8A%A0%E3%81%AE%E3%83%97%E3%83%AD%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92-import-%E8%A6%81%E7%B4%A0%E3%81%A7%E8%BF%BD%E5%8A%A0%E3%81%99%E3%82%8B)
+    - [例](#%E4%BE%8B)
+  - [生成された .csproj に Analzyer の参照を追加する](#%E7%94%9F%E6%88%90%E3%81%95%E3%82%8C%E3%81%9F-csproj-%E3%81%AB-analzyer-%E3%81%AE%E5%8F%82%E7%85%A7%E3%82%92%E8%BF%BD%E5%8A%A0%E3%81%99%E3%82%8B)
+    - [使用方法](#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95)
 - [License](#license)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
