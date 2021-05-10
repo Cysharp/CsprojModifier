@@ -8,6 +8,7 @@ CsprojModifier provides following features:
 
 - Insert additional projects as `Import` elements into generated .csproj
 - Add analyzer references to generated .csproj
+  - Disabled if you are using Rider or Visual Studio Code with Unity 2020.2 or later
 
 ![](docs/images/Screen-01.png)
 
@@ -64,6 +65,8 @@ For example, you can create the following file `YourAwesomeApp.DesignTime.props`
 [BannedApiAnalyzer](https://github.com/dotnet/roslyn-analyzers/tree/main/src/Microsoft.CodeAnalysis.BannedApiAnalyzers) expects BannedSymbols.txt as `AdditionalFiles` to be included in the project, so adding it this way will work.
 
 ### Add analyzer references to generated .csproj
+**NOTE**: Disabled this feature if you are using Rider or Visual Studio Code with Unity 2020.2 or later. Unity Editor has Roslyn Analyzer IDE support.
+
 [Roslyn analyzers are supported in Unity 2020.2 or later](https://docs.unity3d.com/Manual/roslyn-analyzers.html). However,  currently, Roslyn analyzers are not included in .csproj, and those are only used at compile time.
 
 The extension will insert `Analzyer` element into .csproj when generating the project file. As a result, you can run Roslyn Analyzer when editing code in Visual Studio. (of course, you can use it before 2020.2!)
