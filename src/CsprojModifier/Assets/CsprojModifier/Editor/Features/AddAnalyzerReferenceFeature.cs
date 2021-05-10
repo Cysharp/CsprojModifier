@@ -58,6 +58,7 @@ namespace CsprojModifier.Editor.Features
         public override string OnGeneratedCSProject(string path, string content)
         {
             var settings = CsprojModifierSettings.Instance;
+            if (RoslynAnalyzerUnityEditorNativeSupport.HasRoslynAnalyzerIdeSupport) return content;
             if (!settings.EnableAddAnalyzerReferences) return content;
 
             var canApply = path.EndsWith("Assembly-CSharp.csproj") ||
@@ -90,14 +91,21 @@ namespace CsprojModifier.Editor.Features
 
         public override void OnGUI()
         {
-            EditorGUILayout.LabelField("Analyzer", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("Roslyn Analyzer", EditorStyles.boldLabel);
             DrawAnalyzerReferences();
         }
 
         private void DrawAnalyzerReferences()
         {
             var settings = CsprojModifierSettings.Instance;
-            settings.EnableAddAnalyzerReferences = EditorGUILayout.ToggleLeft("Add Analyzer references to .csproj", settings.EnableAddAnalyzerReferences);
+
+            if (RoslynAnalyzerUnityEditorNativeSupport.HasRoslynAnalyzerIdeSupport)
+            {
+                EditorGUILayout.HelpBox("The current code editor has Roslyn Analyzer IDE support. Roslyn Analyzers are enabled by Unity Editor.", MessageType.Info);
+                return;
+            }
+
+            settings.EnableAddAnalyzerReferences = EditorGUILayout.ToggleLeft("Add Roslyn Analyzer references to .csproj", settings.EnableAddAnalyzerReferences);
             if (settings.EnableAddAnalyzerReferences)
             {
                 using (new EditorGUILayout.VerticalScope(GUI.skin.box))
@@ -108,12 +116,32 @@ namespace CsprojModifier.Editor.Features
                         EditorGUILayout.LabelField(analyzer, EditorStyles.label);
                     }
                 }
-                EditorGUILayout.HelpBox("Analyzer must be tagged as 'RoslynAnalyzer'", MessageType.Info);
+                EditorGUILayout.HelpBox("Analyzer must be labeled as 'RoslynAnalyzer'", MessageType.Info);
 
-                EditorGUILayout.LabelField("The project to be added for analyzer references.");
+                EditorGUILayout.LabelField("The project to be added for Roslyn Analyzer references.");
                 _reorderableListAdditionalAddAnalyzerProjects.DoLayoutList();
             }
         }
 
+
+        private static class RoslynAnalyzerUnityEditorNativeSupport
+        {
+            public static bool HasRoslynAnalyzerIdeSupport
+            {
+                get
+                {
+
+#if UNITY_2020_2_OR_NEWER && (HAS_ROSLYN_ANALZYER_SUPPORT_RIDER || HAS_ROSLYN_ANALZYER_SUPPORT_VSCODE)
+                    // The editor extension for 'Rider' or 'Visual Studio Code' has the functionality to add Roslyn analyzer references.
+                    var codeEditorType = Unity.CodeEditor.CodeEditor.CurrentEditor.GetType();
+                    if (codeEditorType.Name == "VSCodeScriptEditor" || codeEditorType.Name == "RiderScriptEditor")
+                    {
+                        return true;
+                    }
+#endif
+                    return false;
+                }
+            }
+        }
     }
 }
