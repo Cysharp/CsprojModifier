@@ -6,6 +6,7 @@ CsprojModifier は次の特徴を備えています:
 
 - 生成された .csproj に追加のプロジェクトを `Import` 要素で追加する
 - 生成された .csproj に Analzyer の参照を追加する
+  - 2020.2 以降で Rider または Visual Studio Code を利用している場合には無効
 
 ![](docs/images/Screen-01.png)
 

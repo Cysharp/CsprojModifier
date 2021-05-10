@@ -1,5 +1,5 @@
 {
-    "name": "CsprojtModifier.Editor",
+    "name": "CsprojModifier.Editor",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -8,6 +8,17 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.ide.rider",
+            "expression": "2.0.6",
+            "define": "HAS_ROSLYN_ANALZYER_SUPPORT_RIDER"
+        },
+        {
+            "name": "com.unity.ide.vscode",
+            "expression": "1.2.0",
+            "define": "HAS_ROSLYN_ANALZYER_SUPPORT_VSCODE"
+        }
+    ],
     "noEngineReferences": false
 }
