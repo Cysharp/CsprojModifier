@@ -61,6 +61,8 @@ https://github.com/Cysharp/CsprojModifier.git?path=src/CsprojModifier/Assets/Csp
 [BannedApiAnalyzer](https://github.com/dotnet/roslyn-analyzers/tree/main/src/Microsoft.CodeAnalysis.BannedApiAnalyzers) は BannedSymbols.txt が `AdditionalFiles` としてプロジェクトに追加されていることを期待しているため、これによってうまく機能するようになります。
 
 ### 生成された .csproj に Analzyer の参照を追加する
+**注意**: Rider または Visual Studio Code を Unity 2020.2 以降で使用している場合にはこの機能は無効となります。IDE での Roslyn Analyzer は Unity Editor によってサポートされます。
+
 [Roslyn Analyzer は Unity 2020.2 以降でサポートされました](https://docs.unity3d.com/Manual/roslyn-analyzers.html)。しかしながら、現在 Roslyn Analyzer は .csproj に追加されず、コンパイル時にのみ使用されます。
 
 この拡張は `Analyzer` 要素を .csproj プロジェクトファイルが生成される際に追加します。その結果、Visual Studio でコード編集時にも Roslyn Analyzer の恩恵を受けることができます。(もちろん、2020.2 以前にも対応します)
