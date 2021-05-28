@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -24,75 +25,101 @@ namespace CsprojModifier.Editor.Features
             {
                 drawElementCallback = ((rect, index, active, focused) =>
                 {
-                    var selectedItem = settings.AdditionalImports[index];
-
-                    rect.height -= 4;
-                    rect.y += 2;
-
-                    const int buttonBrowseWidth = 32;
-                    const int buttonPositionWidth = 96;
-                    const int controlGap = 4;
-
-                    rect.width -= controlGap + buttonBrowseWidth + controlGap + buttonPositionWidth;
-                    selectedItem.Path = EditorGUI.TextField(rect, selectedItem.Path);
-
-                    rect.x += rect.width + controlGap;
-                    rect.width = buttonBrowseWidth;
-                    if (GUI.Button(rect, "..."))
+                    using (var editScope = new EditorGUI.ChangeCheckScope())
                     {
-                        var selectedFilePath = EditorUtility.OpenFilePanelWithFilters(
-                            "Add Additional Project",
-                            Path.GetDirectoryName(Application.dataPath),
-                            new[] { "MSBuild Project File (*.props;*.target)", "props,target", "All files", "*" }
-                        );
-                        if (!string.IsNullOrWhiteSpace(selectedFilePath))
+                        var selectedItem = settings.AdditionalImports[index];
+
+                        rect.height -= 4;
+                        rect.y += 2;
+
+                        const int buttonBrowseWidth = 32;
+                        const int buttonPositionWidth = 96;
+                        const int controlGap = 4;
+
+                        rect.width -= controlGap + buttonBrowseWidth + controlGap + buttonPositionWidth;
+                        selectedItem.Path = EditorGUI.TextField(rect, selectedItem.Path);
+
+                        rect.x += rect.width + controlGap;
+                        rect.width = buttonBrowseWidth;
+                        if (GUI.Button(rect, "..."))
                         {
-                            selectedItem.Path = PathEx.MakeRelative(Application.dataPath, selectedFilePath);
+                            var selectedFilePath = EditorUtility.OpenFilePanelWithFilters(
+                                "Add Additional Project",
+                                Path.GetDirectoryName(Application.dataPath),
+                                new[] { "MSBuild Project File (*.props;*.target)", "props,target", "All files", "*" }
+                            );
+                            if (!string.IsNullOrWhiteSpace(selectedFilePath))
+                            {
+                                selectedItem.Path = PathEx.MakeRelative(Application.dataPath, selectedFilePath);
+                            }
+                        }
+
+                        rect.x += rect.width + controlGap;
+                        rect.width = buttonPositionWidth;
+                        selectedItem.Position = (ImportProjectPosition)EditorGUI.EnumPopup(rect, selectedItem.Position);
+
+                        if (editScope.changed)
+                        {
+                            settings.Save();
                         }
                     }
-
-                    rect.x += rect.width + controlGap;
-                    rect.width = buttonPositionWidth;
-                    selectedItem.Position = (ImportProjectPosition)EditorGUI.EnumPopup(rect, selectedItem.Position);
                 }),
-                onChangedCallback = (list) => settings.Save(),
+                onChangedCallback = (list) =>
+                {
+                    settings.Save();
+                },
             };
 
-
-            _reorderableListAdditionalImportsAdditionalProjects = new ReorderableList(settings.AdditionalImportsAdditionalProjects, typeof(string), draggable: true, displayHeader: false, displayAddButton: true, displayRemoveButton: true)
+            // WORKAROUND: https://issuetracker.unity3d.com/issues/missingmethodexception-when-adding-elements-to-reorderablelist-with-string-type
+            var additionalImportsAdditionalProjects = new List<ValueTuple<string>>(settings.AdditionalImportsAdditionalProjects.Select(x => ValueTuple.Create(x)));
+            _reorderableListAdditionalImportsAdditionalProjects = new ReorderableList(additionalImportsAdditionalProjects, typeof(ValueTuple<string>), draggable: true, displayHeader: false, displayAddButton: true, displayRemoveButton: true)
             {
                 drawNoneElementCallback = rect => EditorGUI.LabelField(rect, "Assembly-CSharp.csproj and Assembly-CSharp-Editor.csproj are always targeted."),
                 drawElementCallback = ((rect, index, active, focused) =>
                 {
-                    var selectedItem = settings.AdditionalImportsAdditionalProjects[index];
-
-                    rect.height -= 4;
-                    rect.y += 2;
-
-                    const int buttonBrowseWidth = 32;
-                    const int controlGap = 4;
-
-                    rect.width -= controlGap + buttonBrowseWidth;
-                    selectedItem = EditorGUI.TextField(rect, selectedItem);
-
-                    rect.x += rect.width + controlGap;
-                    rect.width = buttonBrowseWidth;
-                    if (GUI.Button(rect, "..."))
+                    using (var editScope = new EditorGUI.ChangeCheckScope())
                     {
-                        var selectedFilePath = EditorUtility.OpenFilePanelWithFilters(
-                            "Add Additional Project",
-                            Path.GetDirectoryName(Application.dataPath),
-                            new[] { "C# Project File (*.csproj)", "csproj", "All files", "*" }
-                        );
-                        if (!string.IsNullOrWhiteSpace(selectedFilePath))
+                        var selectedItem = additionalImportsAdditionalProjects[index];
+
+                        rect.height -= 4;
+                        rect.y += 2;
+
+                        const int buttonBrowseWidth = 32;
+                        const int controlGap = 4;
+
+                        rect.width -= controlGap + buttonBrowseWidth;
+                        selectedItem = ValueTuple.Create(EditorGUI.TextField(rect, selectedItem.Item1));
+
+                        rect.x += rect.width + controlGap;
+                        rect.width = buttonBrowseWidth;
+                        if (GUI.Button(rect, "..."))
                         {
-                            selectedItem = PathEx.MakeRelative(Application.dataPath, selectedFilePath);
+                            var selectedFilePath = EditorUtility.OpenFilePanelWithFilters(
+                                "Add Additional Project",
+                                Path.GetDirectoryName(Application.dataPath),
+                                new[] { "C# Project File (*.csproj)", "csproj", "All files", "*" }
+                            );
+                            if (!string.IsNullOrWhiteSpace(selectedFilePath))
+                            {
+                                selectedItem = ValueTuple.Create(PathEx.MakeRelative(Application.dataPath, selectedFilePath));
+                                GUI.changed = true;
+                            }
+                        }
+
+                        if (editScope.changed)
+                        {
+                            additionalImportsAdditionalProjects[index] = selectedItem;
+                            settings.AdditionalImportsAdditionalProjects = additionalImportsAdditionalProjects.Select(x => x.Item1).ToList();
+                            settings.Save();
                         }
                     }
 
-                    settings.AdditionalImportsAdditionalProjects[index] = selectedItem;
                 }),
-                onChangedCallback = (list) => settings.Save(),
+                onChangedCallback = (list) =>
+                {
+                    settings.AdditionalImportsAdditionalProjects = additionalImportsAdditionalProjects.Select(x => x.Item1).ToList();
+                    settings.Save();
+                },
             };
         }
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -18,40 +19,56 @@ namespace CsprojModifier.Editor.Features
         public override void Initialize()
         {
             var settings = CsprojModifierSettings.Instance;
-            _reorderableListAdditionalAddAnalyzerProjects = new ReorderableList(settings.AddAnalyzerReferencesAdditionalProjects, typeof(string), draggable: true, displayHeader: false, displayAddButton: true, displayRemoveButton: true)
+            // WORKAROUND: https://issuetracker.unity3d.com/issues/missingmethodexception-when-adding-elements-to-reorderablelist-with-string-type
+            var addAnalyzerReferencesAdditionalProjects = new List<ValueTuple<string>>(settings.AddAnalyzerReferencesAdditionalProjects.Select(x => ValueTuple.Create(x)));
+            _reorderableListAdditionalAddAnalyzerProjects = new ReorderableList(addAnalyzerReferencesAdditionalProjects, typeof(ValueTuple<string>), draggable: true, displayHeader: false, displayAddButton: true, displayRemoveButton: true)
             {
                 drawNoneElementCallback = rect => EditorGUI.LabelField(rect, "Assembly-CSharp.csproj and Assembly-CSharp-Editor.csproj are always targeted."),
                 drawElementCallback = ((rect, index, active, focused) =>
                 {
-                    var selectedItem = settings.AddAnalyzerReferencesAdditionalProjects[index];
-
-                    rect.height -= 4;
-                    rect.y += 2;
-
-                    const int buttonBrowseWidth = 32;
-                    const int controlGap = 4;
-
-                    rect.width -= controlGap + buttonBrowseWidth;
-                    selectedItem = EditorGUI.TextField(rect, selectedItem);
-
-                    rect.x += rect.width + controlGap;
-                    rect.width = buttonBrowseWidth;
-                    if (GUI.Button(rect, "..."))
+                    using (var editScope = new EditorGUI.ChangeCheckScope())
                     {
-                        var selectedFilePath = EditorUtility.OpenFilePanelWithFilters(
-                            "Add Additional Project",
-                            Path.GetDirectoryName(Application.dataPath),
-                            new[] { "C# Project File (*.csproj)", "csproj", "All files", "*" }
-                        );
-                        if (!string.IsNullOrWhiteSpace(selectedFilePath))
+                        var selectedItem = addAnalyzerReferencesAdditionalProjects[index];
+
+                        rect.height -= 4;
+                        rect.y += 2;
+
+                        const int buttonBrowseWidth = 32;
+                        const int controlGap = 4;
+
+                        rect.width -= controlGap + buttonBrowseWidth;
+                        selectedItem = ValueTuple.Create(EditorGUI.TextField(rect, selectedItem.Item1));
+
+                        rect.x += rect.width + controlGap;
+                        rect.width = buttonBrowseWidth;
+                        if (GUI.Button(rect, "..."))
                         {
-                            selectedItem = PathEx.MakeRelative(Application.dataPath, selectedFilePath);
+                            var selectedFilePath = EditorUtility.OpenFilePanelWithFilters(
+                                "Add Additional Project",
+                                Path.GetDirectoryName(Application.dataPath),
+                                new[] { "C# Project File (*.csproj)", "csproj", "All files", "*" }
+                            );
+                            if (!string.IsNullOrWhiteSpace(selectedFilePath))
+                            {
+                                selectedItem = ValueTuple.Create(PathEx.MakeRelative(Application.dataPath, selectedFilePath));
+                                GUI.changed = true;
+                            }
+                        }
+
+                        if (editScope.changed)
+                        {
+                            addAnalyzerReferencesAdditionalProjects[index] = selectedItem;
+                            settings.AddAnalyzerReferencesAdditionalProjects = addAnalyzerReferencesAdditionalProjects.Select(x => x.Item1).ToList();
+                            settings.Save();
                         }
                     }
 
-                    settings.AddAnalyzerReferencesAdditionalProjects[index] = selectedItem;
                 }),
-                onChangedCallback = (list) => settings.Save(),
+                onChangedCallback = (list) =>
+                {
+                    settings.AddAnalyzerReferencesAdditionalProjects = addAnalyzerReferencesAdditionalProjects.Select(x => x.Item1).ToList();
+                    settings.Save();
+                },
             };
         }
 
