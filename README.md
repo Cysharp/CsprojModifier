@@ -21,6 +21,7 @@ CsprojModifier provides following features:
 - [Features](#features)
   - [Insert additional projects as `Import` elements into generated .csproj](#insert-additional-projects-as-import-elements-into-generated-csproj)
     - [Example](#example)
+    - [Inject the contents of additional project files (.props, .targets) directly instead of importing them](#inject-the-contents-of-additional-project-files-props-targets-directly-instead-of-importing-them)
   - [Add analyzer references to generated .csproj](#add-analyzer-references-to-generated-csproj)
     - [How to use](#how-to-use)
 - [License](#license)
