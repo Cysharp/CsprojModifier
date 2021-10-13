@@ -33,7 +33,7 @@ namespace CsprojModifier.Editor.Features
                         rect.y += 2;
 
                         const int buttonBrowseWidth = 32;
-                        const int buttonPositionWidth = 96;
+                        const int buttonPositionWidth = 128;
                         const int controlGap = 4;
 
                         rect.width -= controlGap + buttonBrowseWidth + controlGap + buttonPositionWidth;
@@ -159,6 +159,16 @@ namespace CsprojModifier.Editor.Features
                     else if (target.Position == ImportProjectPosition.Prepend)
                     {
                         projectE.AddFirst(new XElement(nsMsbuild + "Import", new XAttribute("Project", target.Path)));
+                        projectE.AddFirst(new XComment($"{target.Path}:{hash}"));
+                    }
+                    else if (target.Position == ImportProjectPosition.AppendContent)
+                    {
+                        projectE.Add(new XComment($"{target.Path}:{hash}"));
+                        projectE.Add(XDocument.Load(target.Path).Root.Elements());
+                    }
+                    else if (target.Position == ImportProjectPosition.PrependContent)
+                    {
+                        projectE.AddFirst(XDocument.Load(target.Path).Root.Elements());
                         projectE.AddFirst(new XComment($"{target.Path}:{hash}"));
                     }
                 }

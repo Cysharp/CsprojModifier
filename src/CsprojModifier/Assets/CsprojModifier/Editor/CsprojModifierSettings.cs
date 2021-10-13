@@ -64,6 +64,8 @@ namespace CsprojModifier.Editor
     {
         Append,
         Prepend,
+        AppendContent,
+        PrependContent,
     }
 
     [Serializable]
