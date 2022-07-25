@@ -42,5 +42,5 @@ jobs:
       # Store artifacts.
       - uses: actions/upload-artifact@v2
         with:
-          name: CsprojModifier.${{ matrix.unity }}.unitypackage
+          name: CsprojModifier.${{ matrix.unity }}.unitypackage.zip
           path: ./src/CsprojModifier/*.unitypackage
