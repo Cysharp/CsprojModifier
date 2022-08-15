@@ -21,6 +21,8 @@ namespace CsprojModifier.Editor
         private static string OnGeneratedCSProject(string path, string content)
             => _features.OfType<ICsprojModifierGeneratedFileProcessor>().Aggregate(content, (r, x) => x.OnGeneratedCSProject(path, r));
 
+#if UNITY_2018_1_OR_NEWER && HAS_ROSLYN_ANALZYER_SUPPORT_RIDER_3_0_2_OR_NEWER
+#else
         private static void OnGeneratedCSProjectFiles()
         {
             foreach (var feature in _features.OfType<ICsprojModifierGeneratedFileProcessor>())
@@ -28,6 +30,7 @@ namespace CsprojModifier.Editor
                 feature.OnGeneratedCSProjectFiles();
             }
         }
+#endif
 
         private static string OnGeneratedSlnSolution(string path, string content)
             => _features.OfType<ICsprojModifierGeneratedFileProcessor>().Aggregate(content, (r, x) => x.OnGeneratedSlnSolution(path, r));

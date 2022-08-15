@@ -17,6 +17,11 @@
             "define": "HAS_ROSLYN_ANALZYER_SUPPORT_RIDER"
         },
         {
+            "name": "com.unity.ide.rider",
+            "expression": "3.0.2",
+            "define": "HAS_ROSLYN_ANALZYER_SUPPORT_RIDER_3_0_2_OR_NEWER"
+        },
+        {
             "name": "com.unity.ide.vscode",
             "expression": "1.2.0",
             "define": "HAS_ROSLYN_ANALZYER_SUPPORT_VSCODE"
