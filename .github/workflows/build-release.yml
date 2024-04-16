@@ -54,7 +54,7 @@ jobs:
           directory: src/CsprojModifier
 
       # Store artifacts.
-      - uses: actions/upload-artifact@v1
+      - uses: actions/upload-artifact@v4
         with:
           name: CsprojModifier.${{ inputs.tag }}.unitypackage
           path: ./src/CsprojModifier/CsprojModifier.${{ inputs.tag }}.unitypackage
