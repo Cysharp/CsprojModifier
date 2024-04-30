@@ -65,7 +65,7 @@ jobs:
           directory: src/CsprojModifier
 
       # Store artifacts.
-      - uses: actions/upload-artifact@v1
+      - uses: Cysharp/Actions/.github/actions/upload-artifact@main
         with:
           name: CsprojModifier.${{ inputs.tag }}.unitypackage
           path: ./src/CsprojModifier/CsprojModifier.${{ inputs.tag }}.unitypackage
