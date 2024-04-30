@@ -69,6 +69,7 @@ jobs:
         with:
           name: CsprojModifier.${{ inputs.tag }}.unitypackage
           path: ./src/CsprojModifier/CsprojModifier.${{ inputs.tag }}.unitypackage
+          retention-days: 1
 
   # release
   create-release:
