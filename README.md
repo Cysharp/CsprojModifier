@@ -8,7 +8,7 @@ CsprojModifier provides following features:
 
 - Insert additional projects as `Import` elements into generated .csproj
 - Add analyzer references to generated .csproj
-  - Disabled if you are using Rider or Visual Studio Code with Unity 2020.2 or later
+  - Disabled if you are using Visual Studio, Rider or Visual Studio Code with Unity 2020.2 or later
 
 ![](docs/images/Screen-01.png)
 
@@ -29,7 +29,7 @@ CsprojModifier provides following features:
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Works with
-- Unity Editor 2019.4 (LTS) or later
+- Unity Editor 2022.3 (LTS) or later
 - Visual Studio 2019 or Rider
 
 ## Install

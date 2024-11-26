@@ -6,7 +6,7 @@ CsprojModifier は次の特徴を備えています:
 
 - 生成された .csproj に追加のプロジェクトを `Import` 要素で追加する
 - 生成された .csproj に Analzyer の参照を追加する
-  - 2020.2 以降で Rider または Visual Studio Code を利用している場合には無効
+  - 2020.2 以降で Visual Studio, Rider または Visual Studio Code を利用している場合には無効
 
 ![](docs/images/Screen-01.png)
 
@@ -27,7 +27,7 @@ CsprojModifier は次の特徴を備えています:
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Works with
-- Unity Editor 2019.4 (LTS) or later
+- Unity Editor 2022.3 (LTS) or later
 - Visual Studio 2019 or Rider
 
 ## Install
