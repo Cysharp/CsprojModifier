@@ -1,5 +1,6 @@
 {
     "name": "CsprojModifier.Editor",
+    "rootNamespace": "",
     "references": [],
     "includePlatforms": [
         "Editor"
@@ -25,6 +26,11 @@
             "name": "com.unity.ide.vscode",
             "expression": "1.2.0",
             "define": "HAS_ROSLYN_ANALZYER_SUPPORT_VSCODE"
+        },
+        {
+            "name": "com.unity.ide.visualstudio",
+            "expression": "2.0.0",
+            "define": "HAS_ROSLYN_ANALZYER_SUPPORT_VS"
         }
     ],
     "noEngineReferences": false
