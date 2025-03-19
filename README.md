@@ -10,7 +10,7 @@ CsprojModifier provides following features:
 - Add analyzer references to generated .csproj
   - Disabled if you are using Visual Studio, Rider or Visual Studio Code with Unity 2020.2 or later
 
-![](docs/images/Screen-01.png)
+![image](docs/images/Screen-01.png)
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
