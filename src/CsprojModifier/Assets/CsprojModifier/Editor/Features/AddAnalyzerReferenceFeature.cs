@@ -15,6 +15,7 @@ namespace CsprojModifier.Editor.Features
     public class AddAnalyzerReferenceFeature : CsprojModifierFeatureBase
     {
         private ReorderableList _reorderableListAdditionalAddAnalyzerProjects;
+        private IReadOnlyList<string> _analyzers = GetAnalyzers();
 
         public override void Initialize()
         {
@@ -127,14 +128,17 @@ namespace CsprojModifier.Editor.Features
             {
                 using (new EditorGUILayout.VerticalScope(GUI.skin.box))
                 {
-                    var analyzers = GetAnalyzers();
-                    foreach (var analyzer in analyzers)
+                    foreach (var analyzer in _analyzers)
                     {
                         EditorGUILayout.LabelField(analyzer, EditorStyles.label);
                     }
                 }
                 EditorGUILayout.HelpBox("Analyzer must be labeled as 'RoslynAnalyzer'", MessageType.Info);
 
+                if (GUILayout.Button("Rescan Roslyn Analyzers"))
+                {
+                    _analyzers = GetAnalyzers();
+                }
                 EditorGUILayout.LabelField("The project to be added for Roslyn Analyzer references.");
                 _reorderableListAdditionalAddAnalyzerProjects.DoLayoutList();
             }
