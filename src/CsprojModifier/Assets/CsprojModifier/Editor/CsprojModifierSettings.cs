@@ -56,7 +56,7 @@ namespace CsprojModifier.Editor
 
         public void Save()
         {
-            File.WriteAllText(SettingsPath, JsonUtility.ToJson(_instance));
+            File.WriteAllText(SettingsPath, JsonUtility.ToJson(_instance, true));
         }
     }
 
