@@ -22,7 +22,6 @@ jobs:
       file-path: ./src/CsprojModifier/Assets/CsprojModifier/package.json
       tag: ${{ inputs.tag }}
       dry-run: ${{ inputs.dry-run }}
-      push-tag: false
 
   build-unity:
     needs: [update-packagejson]
