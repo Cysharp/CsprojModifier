@@ -169,11 +169,11 @@ namespace CsprojModifier.Editor.Features
                     else if (target.Position == ImportProjectPosition.AppendContent)
                     {
                         projectE.Add(new XComment($"{target.Path}:{hash}"));
-                        projectE.Add(XDocument.Load(target.Path).Root.Elements());
+                        projectE.Add(LoadProjectContent(target.Path, projectNs));
                     }
                     else if (target.Position == ImportProjectPosition.PrependContent)
                     {
-                        projectE.AddFirst(XDocument.Load(target.Path).Root.Elements());
+                        projectE.AddFirst(LoadProjectContent(target.Path, projectNs));
                         projectE.AddFirst(new XComment($"{target.Path}:{hash}"));
                     }
                 }
@@ -185,5 +185,21 @@ namespace CsprojModifier.Editor.Features
             return content;
         }
 
+        private static IEnumerable<XElement> LoadProjectContent(string path, XNamespace projectNs)
+        {
+            var source = XDocument.Load(path).Root;
+            var sourceNs = source.Name.Namespace;
+            var elements = source.Elements().ToArray();
+            foreach (var element in elements.SelectMany(x => x.DescendantsAndSelf()).Where(x => x.Name.Namespace == sourceNs))
+            {
+                element.Name = projectNs + element.Name.LocalName;
+                var defaultNamespace = element.Attribute("xmlns");
+                if (defaultNamespace != null && defaultNamespace.Value == sourceNs.NamespaceName)
+                {
+                    defaultNamespace.Remove();
+                }
+            }
+            return elements;
+        }
     }
 }

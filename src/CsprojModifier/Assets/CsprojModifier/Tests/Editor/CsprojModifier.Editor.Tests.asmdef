@@ -1,0 +1,12 @@
+{
+    "name": "CsprojModifier.Editor.Tests",
+    "references": [
+        "CsprojModifier.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ]
+}

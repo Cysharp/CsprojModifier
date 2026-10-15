@@ -3,7 +3,7 @@
 This Unity Editor extension improves the development experience in Visual Studio and Rider by performing additional processing when generating the .csproj.
 
 ## Requirements
-- Unity Editor 2019.4 (LTS) or later
+- Unity Editor 2022.3 (LTS) or later
 - Visual Studio or Rider
 
 ## Features
